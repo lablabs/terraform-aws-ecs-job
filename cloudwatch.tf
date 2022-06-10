@@ -1,14 +1,13 @@
-// Cloudwatch trigger
-// ------------------
+# Cloudwatch trigger
+# ------------------
 resource "aws_cloudwatch_event_rule" "event_rule" {
   name                = var.task_name
   schedule_expression = var.cloudwatch_schedule_expression
 }
 
-// Failure notification configuration (using Cloudwatch)
-// -----------------------------------------------------
-// We create an event rule that sends a message to an SNS Topic every time the task fails with a non-0 error code
-// We also configure the
+# Failure notification configuration (using Cloudwatch)
+# -----------------------------------------------------
+# We create an event rule that sends a message to an SNS Topic every time the task fails with a non-0 error code
 
 resource "aws_cloudwatch_event_target" "ecs_scheduled_task" {
   rule      = aws_cloudwatch_event_rule.event_rule.name

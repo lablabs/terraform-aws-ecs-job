@@ -3,17 +3,17 @@ locals {
   ecs_task_execution_role_name = var.ecs_task_execution_role_name != "" ? data.aws_iam_role.task_execution_role[0].name : aws_iam_role.task_execution_role[0].name
 }
 
-// IAM Resources
-// -------------
-// We create 2 IAM roles:
-// 1. A Task Execution role used to run the ECS task and log output to cloudwatch.  This can be overridden by the user if they are using a
-//    non-default ECSTaskExecutionRole.
-// 2. A second role used by Cloudwatch to launch the ECS task when the timer is triggered
-//
-// Users can add a 3rd role if the ECS Task needs to access AWS resources.
+# IAM Resources
+# -------------
+# We create 2 IAM roles:
+# 1. A Task Execution role used to run the ECS task and log output to cloudwatch.  This can be overridden by the user if they are using a
+#    non-default ECSTaskExecutionRole.
+# 2. A second role used by Cloudwatch to launch the ECS task when the timer is triggered
+#
+# Users can add a 3rd role if the ECS Task needs to access AWS resources.
 
-// Task Execution Role
-// Includes essential ecs access and cloudwatch logging permissions
+# Task Execution Role
+# Includes essential ecs access and cloudwatch logging permissions
 data "aws_iam_policy_document" "task_execution_assume_role" {
   statement {
     principals {
@@ -70,7 +70,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_cloudwatch_access"
   policy_arn = aws_iam_policy.task_execution_logging_policy.arn
 }
 
-// Cloudwatch execution role
+# Cloudwatch execution role
 data "aws_iam_policy_document" "cloudwatch_assume_role" {
   statement {
     principals {
