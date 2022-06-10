@@ -1,7 +1,7 @@
 # Cloudwatch trigger
 # ------------------
 resource "aws_cloudwatch_event_rule" "event_rule" {
-  name                = var.task_name
+  name                = module.label.id
   schedule_expression = var.cloudwatch_schedule_expression
 }
 
@@ -11,7 +11,7 @@ resource "aws_cloudwatch_event_rule" "event_rule" {
 
 resource "aws_cloudwatch_event_target" "ecs_scheduled_task" {
   rule      = aws_cloudwatch_event_rule.event_rule.name
-  target_id = var.task_name
+  target_id = module.label.id
   arn       = local.ecs_cluster_arn
   role_arn  = aws_iam_role.cloudwatch_role.arn
 

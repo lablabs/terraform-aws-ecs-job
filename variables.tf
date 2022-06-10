@@ -24,11 +24,6 @@ variable "ecs_cluster_name" {
   description = "(Optional) Name of the ECS Cluster that you want to execute your cron job. Defaults to your task name if no value is supplied"
 }
 
-variable "task_name" {
-  type        = string
-  description = "Name of the task for resource naming"
-}
-
 variable "task_cpu" {
   default     = 1024
   description = "CPU units to allocate to your job (vCPUs * 1024)"

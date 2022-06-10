@@ -2,7 +2,7 @@ locals {
   ecs_cluster_arn = var.ecs_cluster_name != "" ? data.aws_ecs_cluster.existing[0].arn : aws_ecs_cluster.this[0].arn
   container_definitions = [
     merge({
-      "name" : var.task_name,
+      "name" : module.label.id,
       "image" : "${data.aws_ecr_repository.existing.repository_url}:${var.image_tag}",
       "cpu" : var.task_cpu / 1024,
       "memoryReservation" : var.task_memory,
@@ -11,8 +11,8 @@ locals {
         "logDriver" : "awslogs",
         "options" : {
           "awslogs-region" : var.aws_region,
-          "awslogs-group" : var.task_name,
-          "awslogs-stream-prefix" : var.task_name,
+          "awslogs-group" : module.label.id,
+          "awslogs-stream-prefix" : module.label.id,
           "awslogs-create-group" : "true"
         }
       }
@@ -22,7 +22,7 @@ locals {
 
 resource "aws_ecs_cluster" "this" {
   count = var.ecs_cluster_name == "" ? 1 : 0
-  name  = var.task_name
+  name  = module.label.id
 }
 
 data "aws_ecs_cluster" "existing" {
@@ -35,7 +35,7 @@ data "aws_ecr_repository" "existing" {
 }
 
 resource "aws_ecs_task_definition" "this" {
-  family                   = var.task_name
+  family                   = module.label.id
   container_definitions    = jsonencode(local.container_definitions)
   task_role_arn            = var.task_role_arn
   execution_role_arn       = local.ecs_task_execution_role_arn

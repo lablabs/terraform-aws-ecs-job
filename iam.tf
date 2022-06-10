@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "task_execution_cloudwatch_access" {
       "logs:PutRetentionPolicy",
       "logs:CreateLogGroup"
     ]
-    resources = ["arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:${var.task_name}:*"]
+    resources = ["arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:${module.label.id}:*"]
   }
 }
 
@@ -49,12 +49,12 @@ data "aws_iam_role" "task_execution_role" {
 resource "aws_iam_role" "task_execution_role" {
   count = var.ecs_task_execution_role_name == "" ? 1 : 0
 
-  name               = "${var.task_name}-execution"
+  name               = "${module.label.id}-execution"
   assume_role_policy = data.aws_iam_policy_document.task_execution_assume_role.json
 }
 
 resource "aws_iam_policy" "task_execution_logging_policy" {
-  name   = "${var.task_name}-logging"
+  name   = "${module.label.id}-logging"
   policy = data.aws_iam_policy_document.task_execution_cloudwatch_access.json
 }
 
@@ -101,7 +101,7 @@ data "aws_iam_policy_document" "cloudwatch" {
 }
 
 resource "aws_iam_role" "cloudwatch_role" {
-  name               = "${var.task_name}-cloudwatch-execution"
+  name               = "${module.label.id}-cloudwatch-execution"
   assume_role_policy = data.aws_iam_policy_document.cloudwatch_assume_role.json
 
 }
@@ -112,6 +112,6 @@ resource "aws_iam_role_policy_attachment" "cloudwatch" {
 }
 
 resource "aws_iam_policy" "cloudwatch" {
-  name   = "${var.task_name}-cloudwatch-execution"
+  name   = "${module.label.id}-cloudwatch-execution"
   policy = data.aws_iam_policy_document.cloudwatch.json
 }

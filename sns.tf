@@ -18,8 +18,8 @@ resource "aws_sns_topic_policy" "task_failure" {
 }
 
 resource "aws_cloudwatch_event_rule" "task_failure" {
-  name        = "${var.task_name}_task_failure"
-  description = "Watch for ${var.task_name} tasks that exit with non zero exit codes"
+  name        = "${module.label.id}_task_failure"
+  description = "Watch for ${module.label.id} tasks that exit with non zero exit codes"
 
   event_pattern = <<EOF
   {
@@ -49,11 +49,11 @@ resource "aws_cloudwatch_event_rule" "task_failure" {
 }
 
 resource "aws_sns_topic" "task_failure" {
-  name = "${var.task_name}_task_failure"
+  name = "${module.label.id}_task_failure"
 }
 
 resource "aws_cloudwatch_event_target" "sns_target" {
   rule  = aws_cloudwatch_event_rule.task_failure.name
   arn   = aws_sns_topic.task_failure.arn
-  input = jsonencode({ "message" : "Task ${var.task_name} failed! Please check logs https://console.aws.amazon.com/cloudwatch/home#logsV2:log-groups/log-group/${var.task_name}" })
+  input = jsonencode({ "message" : "Task ${module.label.id} failed! Please check logs https://console.aws.amazon.com/cloudwatch/home#logsV2:log-groups/log-group/${module.label.id}" })
 }
