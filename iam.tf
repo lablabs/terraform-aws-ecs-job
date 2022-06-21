@@ -1,6 +1,7 @@
 locals {
   ecs_task_execution_role_arn  = var.ecs_task_execution_role_name != "" ? data.aws_iam_role.task_execution_role[0].arn : aws_iam_role.task_execution_role[0].arn
   ecs_task_execution_role_name = var.ecs_task_execution_role_name != "" ? data.aws_iam_role.task_execution_role[0].name : aws_iam_role.task_execution_role[0].name
+  aws_account_id               = var.aws_account_id != "" ? var.aws_account_id : data.aws_caller_identity.current.account_id
 }
 
 # IAM Resources
@@ -27,6 +28,8 @@ data "aws_iam_policy_document" "task_execution_assume_role" {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
 data "aws_iam_policy_document" "task_execution_cloudwatch_access" {
   statement {
     effect = "Allow"
@@ -34,7 +37,7 @@ data "aws_iam_policy_document" "task_execution_cloudwatch_access" {
       "logs:PutRetentionPolicy",
       "logs:CreateLogGroup"
     ]
-    resources = ["arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:${module.label.id}:*"]
+    resources = ["arn:aws:logs:${var.aws_region}:${local.aws_account_id}:log-group:${module.label.id}:*"]
   }
 }
 
@@ -43,7 +46,6 @@ data "aws_iam_role" "task_execution_role" {
 
   name = var.ecs_task_execution_role_name
 }
-
 
 
 resource "aws_iam_role" "task_execution_role" {

@@ -31,7 +31,8 @@ data "aws_ecs_cluster" "existing" {
 }
 
 data "aws_ecr_repository" "existing" {
-  name = var.ecr_repo_name
+  name        = var.ecr_repo_name
+  registry_id = var.ecr_registry_id
 }
 
 resource "aws_ecs_task_definition" "this" {

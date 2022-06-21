@@ -7,11 +7,18 @@ variable "aws_region" {
 variable "aws_account_id" {
   description = "AWS account id"
   type        = string
+  default     = ""
 }
 
 variable "ecr_repo_name" {
   type        = string
   description = "Name of the ECR repo that contains the Docker image of your cron job"
+}
+
+variable "ecr_registry_id" {
+  description = "Registry id of the ECR repo"
+  type        = string
+  default     = ""
 }
 
 variable "image_tag" {
@@ -57,5 +64,5 @@ variable "task_role_arn" {
 
 variable "ecs_task_execution_role_name" {
   default     = ""
-  description = "If the default AWS ECSTaskExecutionRole is not sufficient for your needs, you can provide your own ECS Task Execution Role here.  The module will attach a CloudWatch policy for logging purposes."
+  description = "If the default AWS ECSTaskExecutionRole is not sufficient for your needs, you can provide your own ECS Task Execution Role here. The module will attach a CloudWatch policy for logging purposes."
 }
