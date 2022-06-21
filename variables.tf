@@ -41,6 +41,12 @@ variable "task_memory" {
   description = "In MiB"
 }
 
+variable "env_variables" {
+  type        = map(string)
+  description = "The environment variables to pass to the container. This is a map of string: {name: value}"
+  default     = null
+}
+
 variable "subnet_ids" {
   type        = list(string)
   description = "Subnets where the job will be run"

@@ -7,6 +7,12 @@ locals {
       "cpu" : var.task_cpu / 1024,
       "memoryReservation" : var.task_memory,
       "essential" : true,
+      "environment" : [
+        for k, v in var.env_variables : {
+          name = k
+          value = v
+        }
+      ],
       "logConfiguration" : {
         "logDriver" : "awslogs",
         "options" : {
