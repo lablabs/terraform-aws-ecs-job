@@ -49,6 +49,7 @@ variable "env_variables" {
 
 variable "subnet_ids" {
   type        = list(string)
+  default     = []
   description = "Subnets where the job will be run"
 }
 
