@@ -9,7 +9,7 @@ locals {
       "essential" : true,
       "environment" : [
         for k, v in var.env_variables : {
-          name = k
+          name  = k
           value = v
         }
       ],
@@ -29,6 +29,11 @@ locals {
 resource "aws_ecs_cluster" "this" {
   count = var.ecs_cluster_name == "" ? 1 : 0
   name  = module.label.id
+
+  setting {
+    name  = "containerInsights" # https://docs.bridgecrew.io/docs/bc_aws_logging_11
+    value = "enabled"
+  }
 }
 
 data "aws_ecs_cluster" "existing" {

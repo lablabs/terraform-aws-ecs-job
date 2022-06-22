@@ -56,7 +56,8 @@ resource "aws_cloudwatch_event_rule" "task_failure" {
 resource "aws_sns_topic" "task_failure" {
   count = var.cloudwatch_schedule_expression != "" ? 1 : 0
 
-  name = "${module.label.id}_task_failure"
+  name              = "${module.label.id}_task_failure"
+  kms_master_key_id = "alias/aws/sns" # https://docs.bridgecrew.io/docs/general_15
 }
 
 resource "aws_cloudwatch_event_target" "sns_target" {

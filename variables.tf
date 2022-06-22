@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "AWS region where the resources are provisioned"
   type        = string
-  default     = "eu-west-1"
+  default     = "eu-central-1"
 }
 
 variable "aws_account_id" {
