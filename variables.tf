@@ -54,6 +54,7 @@ variable "subnet_ids" {
 
 variable "cloudwatch_schedule_expression" {
   type        = string
+  default     = ""
   description = "AWS cron schedule expression"
 }
 

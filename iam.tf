@@ -6,7 +6,7 @@ locals {
 
 # IAM Resources
 # -------------
-# We create 2 IAM roles:
+# 2 IAM roles:
 # 1. A Task Execution role used to run the ECS task and log output to cloudwatch.  This can be overridden by the user if they are using a
 #    non-default ECSTaskExecutionRole.
 # 2. A second role used by Cloudwatch to launch the ECS task when the timer is triggered
@@ -74,6 +74,8 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_cloudwatch_access"
 
 # Cloudwatch execution role
 data "aws_iam_policy_document" "cloudwatch_assume_role" {
+  count = var.cloudwatch_schedule_expression != "" ? 1 : 0
+
   statement {
     principals {
       type = "Service"
@@ -87,6 +89,7 @@ data "aws_iam_policy_document" "cloudwatch_assume_role" {
 }
 
 data "aws_iam_policy_document" "cloudwatch" {
+  count = var.cloudwatch_schedule_expression != "" ? 1 : 0
 
   statement {
     effect    = "Allow"
@@ -103,17 +106,22 @@ data "aws_iam_policy_document" "cloudwatch" {
 }
 
 resource "aws_iam_role" "cloudwatch_role" {
-  name               = "${module.label.id}-cloudwatch-execution"
-  assume_role_policy = data.aws_iam_policy_document.cloudwatch_assume_role.json
+  count = var.cloudwatch_schedule_expression != "" ? 1 : 0
 
+  name               = "${module.label.id}-cloudwatch-execution"
+  assume_role_policy = data.aws_iam_policy_document.cloudwatch_assume_role[0].json
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch" {
-  role       = aws_iam_role.cloudwatch_role.name
-  policy_arn = aws_iam_policy.cloudwatch.arn
+  count = var.cloudwatch_schedule_expression != "" ? 1 : 0
+
+  role       = aws_iam_role.cloudwatch_role[0].name
+  policy_arn = aws_iam_policy.cloudwatch[0].arn
 }
 
 resource "aws_iam_policy" "cloudwatch" {
+  count = var.cloudwatch_schedule_expression != "" ? 1 : 0
+
   name   = "${module.label.id}-cloudwatch-execution"
-  policy = data.aws_iam_policy_document.cloudwatch.json
+  policy = data.aws_iam_policy_document.cloudwatch[0].json
 }
