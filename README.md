@@ -7,8 +7,8 @@ We help companies build, run, deploy and scale software and infrastructure by em
 
 ---
 
-[![Terraform validate](https://github.com/lablabs/terraform-aws-ecs-job/actions/workflows/validate.yaml/badge.svg?branch=main)](https://github.com/lablabs/terraform-aws-ecs-job/actions/workflows/validate.yaml)
-[![pre-commit](https://github.com/lablabs/terraform-aws-ecs-job/actions/workflows/pre-commit.yml/badge.svg?branch=main)](https://github.com/lablabs/terraform-aws-ecs-job/actions/workflows/pre-commit.yml)
+[![Terraform validate](https://github.com/lablabs/terraform-aws-ecs-job/actions/workflows/validate.yaml/badge.svg)](https://github.com/lablabs/terraform-aws-ecs-job/actions/workflows/validate.yaml)
+[![pre-commit](https://github.com/lablabs/terraform-aws-ecs-job/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/lablabs/terraform-aws-ecs-job/actions/workflows/pre-commit.yml)
 
 ## Description
 
@@ -16,7 +16,7 @@ A terraform module to deploy a scheduled task on Amazon ECS cluster.
 
 ## Related Projects
 
-Check out other [terraform AWS modules](https://github.com/orgs/lablabs/repositories?q=terraform-awss&type=public&language=&sort=).
+Check out other [terraform AWS modules](https://github.com/orgs/lablabs/repositories?q=terraform-aws&type=public&language=&sort=).
 
 ## Examples
 
@@ -105,7 +105,7 @@ Feel free to create an issue in this repository if you have questions, suggestio
 We want to provide high quality code and modules. For this reason we are using
 several [pre-commit hooks](.pre-commit-config.yaml) and
 [GitHub Actions workflow](.github/workflows/main.yml). A pull-request to the
-master branch will trigger these validations and lints automatically. Please
+main branch will trigger these validations and lints automatically. Please
 check your code before you will create pull-requests. See
 [pre-commit documentation](https://pre-commit.com/) and
 [GitHub Actions documentation](https://docs.github.com/en/actions) for further
