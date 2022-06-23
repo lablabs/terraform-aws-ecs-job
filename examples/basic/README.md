@@ -2,8 +2,6 @@
 
 The code in this example shows how to use the module with basic configuration and minimal set of other resources.
 
-<!-- vvvv  FIX PRE-COMMIT-TERRAFORM DOCS HOOK  vvvv -->
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
