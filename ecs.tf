@@ -3,7 +3,7 @@ locals {
   container_definitions = [
     merge({
       "name" : module.label.id,
-      "image" : "${data.aws_ecr_repository.existing.repository_url}:${var.image_tag}",
+      "image" : "${var.external_image == "" ? data.aws_ecr_repository.existing[0].repository_url : var.external_image}:${var.image_tag}",
       "cpu" : var.task_cpu / 1024,
       "memoryReservation" : var.task_memory,
       "essential" : true,
@@ -42,6 +42,7 @@ data "aws_ecs_cluster" "existing" {
 }
 
 data "aws_ecr_repository" "existing" {
+  count        = var.external_image == "" ? 1 : 0
   name        = var.ecr_repo_name
   registry_id = var.ecr_registry_id
 }
