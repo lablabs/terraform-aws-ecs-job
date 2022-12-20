@@ -44,7 +44,7 @@ variable "task_memory" {
 variable "env_variables" {
   type        = map(string)
   description = "The environment variables to pass to the container. This is a map of string: {name: value}"
-  default     = null
+  default     = {}
 }
 
 variable "subnet_ids" {
