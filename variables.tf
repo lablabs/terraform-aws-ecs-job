@@ -13,10 +13,17 @@ variable "aws_account_id" {
 variable "ecr_repo_name" {
   type        = string
   description = "Name of the ECR repo that contains the Docker image of your cron job"
+  default     = ""
 }
 
 variable "ecr_registry_id" {
   description = "Registry id of the ECR repo"
+  type        = string
+  default     = ""
+}
+
+variable "external_image" {
+  description = "Full url path to image, e.g. hello-world (without tag)"
   type        = string
   default     = ""
 }
@@ -44,7 +51,7 @@ variable "task_memory" {
 variable "env_variables" {
   type        = map(string)
   description = "The environment variables to pass to the container. This is a map of string: {name: value}"
-  default     = null
+  default     = {}
 }
 
 variable "subnet_ids" {

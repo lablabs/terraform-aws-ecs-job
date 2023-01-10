@@ -70,6 +70,7 @@ See [Basic example](examples/basic/README.md) for further information.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_ecr_repo_name"></a> [ecr\_repo\_name](#input\_ecr\_repo\_name) | Name of the ECR repo that contains the Docker image of your cron job | `string` | n/a | yes |
+| <a name="external_image"></a> [external\_image](#external\_image) | Name of external image, conflicts with `input_ecr_repo_name` and `input_ecr_registry_id`, those will be ignored | `string` | n/a | yes |
 | <a name="input_image_tag"></a> [image\_tag](#input\_image\_tag) | Docker tag of the container that you want to run | `string` | n/a | yes |
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
 | <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | AWS account id | `string` | `""` | no |
