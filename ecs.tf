@@ -42,7 +42,7 @@ data "aws_ecs_cluster" "existing" {
 }
 
 data "aws_ecr_repository" "existing" {
-  count        = var.external_image == "" ? 1 : 0
+  count       = var.external_image == "" ? 1 : 0
   name        = var.ecr_repo_name
   registry_id = var.ecr_registry_id
 }
