@@ -8,13 +8,14 @@ on:
   push:
     branches:
       - main
+      - master
 
   pull_request:
     types: [opened, reopened, synchronize, labeled]
 
 jobs:
   update_release_draft:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: release-drafter/release-drafter@v5
         with:
