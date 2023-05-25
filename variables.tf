@@ -63,6 +63,12 @@ variable "subnet_ids" {
   description = "Subnets where the job will be run"
 }
 
+variable "security_group_ids" {
+  type        = list(string)
+  default     = []
+  description = "Security groups where the job will be run"
+}
+
 variable "cloudwatch_schedule_expression" {
   type        = string
   default     = ""
