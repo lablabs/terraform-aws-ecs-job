@@ -19,7 +19,7 @@ Define `subnet_ids` and `cloudwatch_schedule_expression` variables to schedule r
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ecs_jobs"></a> [ecs\_jobs](#module\_ecs\_jobs) | ../../ | n/a |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 3.6.0 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 4.0.0 |
 
 ## Resources
 
