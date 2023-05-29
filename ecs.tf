@@ -17,9 +17,8 @@ locals {
         "logDriver" : "awslogs",
         "options" : {
           "awslogs-region" : var.aws_region,
-          "awslogs-group" : module.label.id,
+          "awslogs-group" : local.cloudwatch_log_group_name,
           "awslogs-stream-prefix" : module.label.id,
-          "awslogs-create-group" : "true"
         }
       }
     }, var.extra_container_defs)

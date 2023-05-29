@@ -75,6 +75,24 @@ variable "cloudwatch_schedule_expression" {
   description = "AWS cron schedule expression"
 }
 
+variable "cloudwatch_log_group_create" {
+  type        = bool
+  default     = true
+  description = "Whether to create the new Cloudwatch log group for ECS task"
+}
+
+variable "cloudwatch_log_group_name" {
+  type        = string
+  default     = ""
+  description = "Name of the Cloudwatch log group - existing or to-be-created one"
+}
+
+variable "cloudwatch_log_group_retention" {
+  type        = number
+  default     = 0
+  description = "Specifies the number of days you want to retain log events in the specified log group (see possible values https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group#retention_in_days)"
+}
+
 variable "extra_container_defs" {
   type        = any
   default     = {}

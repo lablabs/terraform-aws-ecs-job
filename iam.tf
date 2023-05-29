@@ -34,10 +34,12 @@ data "aws_iam_policy_document" "task_execution_cloudwatch_access" {
   statement {
     effect = "Allow"
     actions = [
-      "logs:PutRetentionPolicy",
-      "logs:CreateLogGroup"
+      # "logs:PutRetentionPolicy",
+      # "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
     ]
-    resources = ["arn:aws:logs:${var.aws_region}:${local.aws_account_id}:log-group:${module.label.id}:*"]
+    resources = ["arn:aws:logs:${var.aws_region}:${local.aws_account_id}:log-group:${local.cloudwatch_log_group_name}:*"]
   }
 }
 
@@ -124,4 +126,50 @@ resource "aws_iam_policy" "cloudwatch" {
 
   name   = "${module.label.id}-cloudwatch-execution"
   policy = data.aws_iam_policy_document.cloudwatch[0].json
+}
+
+data "aws_iam_policy_document" "cloudwatch_log_group_kms" {
+  #checkov:skip=CKV_AWS_109: Allow root and rds service to use kms key
+  #checkov:skip=CKV_AWS_111: Allow root and rds service to use kms key
+  statement {
+    sid    = "Enable the account that owns the KMS key to manage it via IAM"
+    effect = "Allow"
+
+    actions = ["kms:*"]
+
+    resources = ["*"]
+
+    principals {
+      type = "AWS"
+
+      identifiers = [
+        format("arn:aws:iam::%s:root", data.aws_caller_identity.current.account_id)
+      ]
+    }
+  }
+
+  statement {
+    sid       = "Allow Cloudwatch log group to encrypt and decrypt with the KMS key"
+    effect    = "Allow"
+    resources = ["*"]
+
+    actions = [
+      "kms:Encrypt*",
+      "kms:Decrypt*",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:Describe*",
+    ]
+
+    condition {
+      test     = "ArnEquals"
+      variable = "kms:EncryptionContext:aws:logs:arn"
+      values   = ["arn:aws:logs:${var.aws_region}:${local.aws_account_id}:log-group:${local.cloudwatch_log_group_name}"]
+    }
+
+    principals {
+      type        = "Service"
+      identifiers = ["logs.${var.aws_region}.amazonaws.com"]
+    }
+  }
 }

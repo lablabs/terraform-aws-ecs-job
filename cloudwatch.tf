@@ -1,3 +1,7 @@
+locals {
+  cloudwatch_log_group_name = var.cloudwatch_log_group_name != "" ? var.cloudwatch_log_group_name : module.label.id
+}
+
 # Cloudwatch trigger
 # ------------------
 resource "aws_cloudwatch_event_rule" "event_rule" {
@@ -29,4 +33,23 @@ resource "aws_cloudwatch_event_target" "ecs_scheduled_task" {
       security_groups = var.security_group_ids
     }
   }
+}
+
+# Cloudwatch Log Group
+# ------------------
+resource "aws_cloudwatch_log_group" "ecs_scheduled_task" {
+  count             = var.cloudwatch_log_group_create ? 1 : 0
+  name              = local.cloudwatch_log_group_name
+  retention_in_days = var.cloudwatch_log_group_retention
+  kms_key_id        = module.cloudwatch_log_group_kms.key_arn
+  tags              = module.label.tags
+}
+
+module "cloudwatch_log_group_kms" {
+  source  = "cloudposse/kms-key/aws"
+  version = "0.12.1"
+
+  description = "KMS key for Cloudwatch log group"
+  policy      = data.aws_iam_policy_document.cloudwatch_log_group_kms.json
+  context     = module.label.context
 }
