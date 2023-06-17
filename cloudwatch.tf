@@ -1,5 +1,6 @@
 locals {
-  cloudwatch_log_group_name = var.cloudwatch_log_group_name != "" ? var.cloudwatch_log_group_name : module.label.id
+  cloudwatch_log_group_name        = coalesce(var.cloudwatch_log_group_name, module.label.id)
+  cloudwatch_log_group_kms_enabled = alltrue([var.cloudwatch_log_group_create, var.cloudwatch_log_group_kms_enabled])
 }
 
 # Cloudwatch trigger
@@ -38,18 +39,20 @@ resource "aws_cloudwatch_event_target" "ecs_scheduled_task" {
 # Cloudwatch Log Group
 # ------------------
 resource "aws_cloudwatch_log_group" "ecs_scheduled_task" {
-  count             = var.cloudwatch_log_group_create ? 1 : 0
+  count = var.cloudwatch_log_group_create ? 1 : 0
+
   name              = local.cloudwatch_log_group_name
   retention_in_days = var.cloudwatch_log_group_retention
-  kms_key_id        = module.cloudwatch_log_group_kms.key_arn
+  kms_key_id        = local.cloudwatch_log_group_kms_enabled ? module.cloudwatch_log_group_kms.key_arn : null
   tags              = module.label.tags
 }
 
 module "cloudwatch_log_group_kms" {
   source  = "cloudposse/kms-key/aws"
   version = "0.12.1"
+  enabled = local.cloudwatch_log_group_kms_enabled
 
   description = "KMS key for Cloudwatch log group"
-  policy      = data.aws_iam_policy_document.cloudwatch_log_group_kms.json
+  policy      = one(data.aws_iam_policy_document.cloudwatch_log_group_kms[*].json)
   context     = module.label.context
 }

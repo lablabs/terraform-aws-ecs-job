@@ -77,20 +77,26 @@ variable "cloudwatch_schedule_expression" {
 
 variable "cloudwatch_log_group_create" {
   type        = bool
-  default     = true
+  default     = false
   description = "Whether to create the new Cloudwatch log group for ECS task"
 }
 
 variable "cloudwatch_log_group_name" {
   type        = string
   default     = ""
-  description = "Name of the Cloudwatch log group - existing or to-be-created one"
+  description = "Name of the Cloudwatch log group (created by ECS task or self-managed). If not specified, `module.label.id` value will be used"
 }
 
 variable "cloudwatch_log_group_retention" {
   type        = number
   default     = 0
   description = "Specifies the number of days you want to retain log events in the specified log group (see possible values https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group#retention_in_days)"
+}
+
+variable "cloudwatch_log_group_kms_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether to create the KMS key for Cloudwatch log group"
 }
 
 variable "extra_container_defs" {
