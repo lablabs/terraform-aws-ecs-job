@@ -75,12 +75,6 @@ variable "cloudwatch_schedule_expression" {
   description = "AWS cron schedule expression"
 }
 
-variable "cloudwatch_log_group_create" {
-  type        = bool
-  default     = false
-  description = "Whether to create the new Cloudwatch log group for ECS task"
-}
-
 variable "cloudwatch_log_group_name" {
   type        = string
   default     = ""

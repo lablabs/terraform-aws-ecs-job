@@ -64,8 +64,7 @@ See [Basic example](examples/basic/README.md) for further information.
 | [aws_iam_policy_document.cloudwatch_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.cloudwatch_log_group_kms](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.task_execution_assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.task_execution_cloudwatch_access_ecs_managed_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.task_execution_cloudwatch_access_self_managed_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.task_execution_cloudwatch_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.task_failure](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_role.task_execution_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_role) | data source |
 
@@ -77,7 +76,6 @@ See [Basic example](examples/basic/README.md) for further information.
 | <a name="input_attributes"></a> [attributes](#input\_attributes) | ID element. Additional attributes (e.g. `workers` or `cluster`) to add to `id`,<br>in the order they appear in the list. New attributes are appended to the<br>end of the list. The elements of the list are joined by the `delimiter`<br>and treated as a single ID element. | `list(string)` | `[]` | no |
 | <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | AWS account id | `string` | `""` | no |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region where the resources are provisioned | `string` | `"eu-central-1"` | no |
-| <a name="input_cloudwatch_log_group_create"></a> [cloudwatch\_log\_group\_create](#input\_cloudwatch\_log\_group\_create) | Whether to create the new Cloudwatch log group for ECS task | `bool` | `false` | no |
 | <a name="input_cloudwatch_log_group_kms_enabled"></a> [cloudwatch\_log\_group\_kms\_enabled](#input\_cloudwatch\_log\_group\_kms\_enabled) | Whether to create the KMS key for Cloudwatch log group | `bool` | `false` | no |
 | <a name="input_cloudwatch_log_group_name"></a> [cloudwatch\_log\_group\_name](#input\_cloudwatch\_log\_group\_name) | Name of the Cloudwatch log group (created by ECS task or self-managed). If not specified, `module.label.id` value will be used | `string` | `""` | no |
 | <a name="input_cloudwatch_log_group_retention"></a> [cloudwatch\_log\_group\_retention](#input\_cloudwatch\_log\_group\_retention) | Specifies the number of days you want to retain log events in the specified log group (see possible values https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group#retention_in_days) | `number` | `0` | no |

@@ -15,12 +15,11 @@ locals {
       ],
       "logConfiguration" : {
         "logDriver" : "awslogs",
-        "options" : merge({
-          "awslogs-region" : var.aws_region,                 # always required
-          "awslogs-group" : local.cloudwatch_log_group_name, # always required
-          "awslogs-stream-prefix" : module.label.id          # required for FARGATE
-          },
-        !var.cloudwatch_log_group_create ? { "awslogs-create-group" : "true" } : {}) # create ECS-managed log group
+        "options" : {
+          "awslogs-region" : var.aws_region,                               # always required
+          "awslogs-group" : "/aws/ecs/${local.cloudwatch_log_group_name}", # always required
+          "awslogs-stream-prefix" : module.label.id                        # required for FARGATE
+        }
       }
     }, var.extra_container_defs)
   ]

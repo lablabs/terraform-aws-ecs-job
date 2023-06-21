@@ -1,9 +1,8 @@
 locals {
-  ecs_task_execution_role_arn      = var.ecs_task_execution_role_name != "" ? data.aws_iam_role.task_execution_role[0].arn : aws_iam_role.task_execution_role[0].arn
-  ecs_task_execution_role_name     = var.ecs_task_execution_role_name != "" ? data.aws_iam_role.task_execution_role[0].name : aws_iam_role.task_execution_role[0].name
-  aws_account_id                   = var.aws_account_id != "" ? var.aws_account_id : data.aws_caller_identity.current.account_id
-  cloudwatch_log_group_arn         = "arn:aws:logs:${var.aws_region}:${local.aws_account_id}:log-group:${local.cloudwatch_log_group_name}:*"
-  task_execution_cloudwatch_access = var.cloudwatch_log_group_create ? data.aws_iam_policy_document.task_execution_cloudwatch_access_self_managed_log_group : data.aws_iam_policy_document.task_execution_cloudwatch_access_ecs_managed_log_group
+  ecs_task_execution_role_arn  = var.ecs_task_execution_role_name != "" ? data.aws_iam_role.task_execution_role[0].arn : aws_iam_role.task_execution_role[0].arn
+  ecs_task_execution_role_name = var.ecs_task_execution_role_name != "" ? data.aws_iam_role.task_execution_role[0].name : aws_iam_role.task_execution_role[0].name
+  aws_account_id               = var.aws_account_id != "" ? var.aws_account_id : data.aws_caller_identity.current.account_id
+  cloudwatch_log_group_arn     = "arn:aws:logs:${var.aws_region}:${local.aws_account_id}:log-group:${local.cloudwatch_log_group_name}:*"
 }
 
 # IAM Resources
@@ -32,21 +31,7 @@ data "aws_iam_policy_document" "task_execution_assume_role" {
 
 data "aws_caller_identity" "current" {}
 
-data "aws_iam_policy_document" "task_execution_cloudwatch_access_ecs_managed_log_group" {
-  count = !var.cloudwatch_log_group_create ? 1 : 0
-  statement {
-    effect = "Allow"
-    actions = [
-      "logs:PutRetentionPolicy",
-      "logs:CreateLogGroup"
-    ]
-    resources = [local.cloudwatch_log_group_arn]
-  }
-}
-
-data "aws_iam_policy_document" "task_execution_cloudwatch_access_self_managed_log_group" {
-  count = var.cloudwatch_log_group_create ? 1 : 0
-
+data "aws_iam_policy_document" "task_execution_cloudwatch_access" {
   statement {
     effect = "Allow"
     actions = [
@@ -72,7 +57,7 @@ resource "aws_iam_role" "task_execution_role" {
 
 resource "aws_iam_policy" "task_execution_logging_policy" {
   name   = "${module.label.id}-logging"
-  policy = local.task_execution_cloudwatch_access[0].json
+  policy = data.aws_iam_policy_document.task_execution_cloudwatch_access.json
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
@@ -142,7 +127,7 @@ resource "aws_iam_policy" "cloudwatch" {
 }
 
 data "aws_iam_policy_document" "cloudwatch_log_group_kms" {
-  count = local.cloudwatch_log_group_kms_enabled ? 1 : 0
+  count = var.cloudwatch_log_group_kms_enabled ? 1 : 0
 
   #checkov:skip=CKV_AWS_109: Allow root and rds service to use kms key
   #checkov:skip=CKV_AWS_111: Allow root and rds service to use kms key
