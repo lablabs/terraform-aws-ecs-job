@@ -1,5 +1,5 @@
 locals {
-  cloudwatch_log_group_name = coalesce(var.cloudwatch_log_group_name, module.label.id)
+  cloudwatch_log_group_name = "/aws/ecs/${coalesce(var.cloudwatch_log_group_name, module.label.id)}"
 }
 
 # Cloudwatch trigger
