@@ -50,6 +50,6 @@ module "cloudwatch_log_group_kms" {
   enabled = var.cloudwatch_log_group_kms_enabled
 
   description = "KMS key for Cloudwatch log group"
-  policy      = data.aws_iam_policy_document.cloudwatch_log_group_kms[0].json
+  policy      = one(data.aws_iam_policy_document.cloudwatch_log_group_kms[*].json)
   context     = module.label.context
 }
