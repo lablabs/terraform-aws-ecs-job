@@ -2,7 +2,7 @@ locals {
   ecs_task_execution_role_arn  = var.ecs_task_execution_role_name != "" ? data.aws_iam_role.task_execution_role[0].arn : aws_iam_role.task_execution_role[0].arn
   ecs_task_execution_role_name = var.ecs_task_execution_role_name != "" ? data.aws_iam_role.task_execution_role[0].name : aws_iam_role.task_execution_role[0].name
   aws_account_id               = var.aws_account_id != "" ? var.aws_account_id : data.aws_caller_identity.current.account_id
-  cloudwatch_log_group_arn     = "arn:aws:logs:${var.aws_region}:${local.aws_account_id}:log-group:${local.cloudwatch_log_group_name}:*"
+  cloudwatch_log_group_arn     = "arn:aws:logs:${var.aws_region}:${local.aws_account_id}:log-group:${local.cloudwatch_log_group_name}"
 }
 
 # IAM Resources
@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "task_execution_cloudwatch_access" {
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
-    resources = [local.cloudwatch_log_group_arn]
+    resources = ["${local.cloudwatch_log_group_arn}:*"]
   }
 }
 
@@ -164,7 +164,7 @@ data "aws_iam_policy_document" "cloudwatch_log_group_kms" {
     condition {
       test     = "ArnEquals"
       variable = "kms:EncryptionContext:aws:logs:arn"
-      values   = ["arn:aws:logs:${var.aws_region}:${local.aws_account_id}:log-group:${local.cloudwatch_log_group_name}"]
+      values   = [local.cloudwatch_log_group_arn]
     }
 
     principals {
